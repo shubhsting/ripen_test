@@ -1,5 +1,24 @@
 {
+  "name": "ripen-backend",
+  "version": "1.0.0",
+  "description": "Backend for ripen",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon server",
+    "start": "node server.js"
+  },
+  "author": "Ripen",
+  "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1"
+    "axios": "^0.24.0",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "moment": "^2.29.1",
+    "mongoose": "^6.0.12",
+    "portfinder": "^1.0.28",
+    "sib-api-v3-sdk": "^8.2.1",
+    "unix": "*"
   }
 }
