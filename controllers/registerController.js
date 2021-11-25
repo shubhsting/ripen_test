@@ -3,6 +3,9 @@ const { catchAsyncErrors } = require("../middleware/catchAsyncErrors");
 const sendWelcomeMail = require("./testemail");
 const register = catchAsyncErrors(async (req, res) => {
   const check = await User.findOne({ email: req.body.email }).exec();
+  if(check && check.is_verified){
+    return res.status(409).send({message:"user already exists"});
+  }
   if (check) {
     if (check.phone_number.length == 0 && req.body.phone_number) {
       await User.updateOne(
