@@ -19,7 +19,7 @@ async function verifyOTP(req,res) {
         res.status(200).send(response.data);
     }
     catch(e){
-        res.status(400).send(e);
+        res.status(200).send({type:"error",message:e});
     }
 }
 
@@ -29,8 +29,8 @@ async function sendOTP(req,res) {
         console.log("hrllo");
         const { phone } = req.body;
         let user = await User.findOne({ phone_number: phone });
-        if(!user || user.is_verified || phone.length !== 10) return res.status(400).send({message:"Already verified user or Invalid attempt"});
-        if(user.ts && parseInt(user.ts) > moment().subtract(25,'seconds').valueOf()) return res.status(400).send({message:"Kindly retry after 20 seconds"});
+        if(!user || user.is_verified || phone.length !== 10) return res.status(200).send({type:"error",message:"Already verified user or Invalid attempt"});
+        if(user.ts && parseInt(user.ts) > moment().subtract(25,'seconds').valueOf()) return res.status(200).send({type:"error",message:"Kindly retry after 20 seconds"});
         const url = sendOTPApi(phone);
         const response = await triggerRequest('get',url);
         const { type } = response.data;
@@ -43,7 +43,7 @@ async function sendOTP(req,res) {
         res.status(200).send(response.data);
     }
     catch(e){
-        res.status(400).send(e);
+        res.status(200).send({type:"error",message:e});
     }
 }
 
@@ -52,8 +52,8 @@ async function resendOTP(req,res) {
     try{
         const { phone } = req.body;
         let user = await User.findOne({ phone_number: phone });
-        if(!user || user.is_verified || phone.length!=10) return res.status(400).send({message:"Already verified user or Invalid attempt"});
-        if(user.ts && parseInt(user.ts) > moment().subtract(25,'seconds').valueOf()) return res.status(400).send({ message:"Kindly retry after 20 seconds" });
+        if(!user || user.is_verified || phone.length!=10) return res.status(200).send({type:"error",message:"Already verified user or Invalid attempt"});
+        if(user.ts && parseInt(user.ts) > moment().subtract(25,'seconds').valueOf()) return res.status(200).send({ type: "error",message:"Kindly retry after 20 seconds" });
         const url = resendOTPApi(phone);
         const response = await triggerRequest('get',url);
         const { type } = response.data;
@@ -66,7 +66,7 @@ async function resendOTP(req,res) {
         res.status(200).send(response.data);
     }
     catch(e){
-        res.status(400).send(e);
+        res.status(200).send({type:"error",message:e});
     }
 }
 
