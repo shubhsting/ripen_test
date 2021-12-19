@@ -4,7 +4,7 @@ const sendWelcomeMail = require("./testemail");
 const register = catchAsyncErrors(async (req, res) => {
   const check = await User.findOne({ email: req.body.email }).exec();
   const phone =req.body.phone_number;
-  if(phone){
+  if(check && phone.length > 0){
     const check2 = await User.findOne({ phone_number: phone }).exec();
     if(check2 && check2.is_verified){
       return res.status(409).send({message:"user already exists"});
