@@ -9,7 +9,7 @@ const register = catchAsyncErrors(async (req, res) => {
     if(check2 && check2.is_verified){
       return res.status(409).send({message:"user already exists"});
     }
-    else if(check2){
+    else if(check2 && check2.id !== check.id){
       await User.findOneAndDelete({
         email: req.body.email
       });
@@ -17,6 +17,9 @@ const register = catchAsyncErrors(async (req, res) => {
         { phone_number: phone },
         { $set: { email: req.body.email } }
       );
+      return res.status(200).send({ msg: "succesfully joined" });
+    }
+    else if(check.id === check2.id) {
       return res.status(200).send({ msg: "succesfully joined" });
     }
   }
