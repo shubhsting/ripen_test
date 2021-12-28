@@ -19,7 +19,7 @@ const register = catchAsyncErrors(async (req, res) => {
       );
       return res.status(200).send({ msg: "succesfully joined" });
     }
-    else if(check.id === check2.id) {
+    else if(check && check2 && check.id === check2.id) {
       return res.status(200).send({ msg: "succesfully joined", id: check.id });
     }
   }
