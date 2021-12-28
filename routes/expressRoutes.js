@@ -52,6 +52,49 @@ exports.expressRoutes = (app) => {
   
     })
 
+    app.get("/users/update/phone/:phone",async(req,res)=>{
+      try{
+        const phone = req.params.phone;
+        const user = await User.findOne({
+          phone_number: phone
+        })
+       
+        if(user) {
+          await User.updateOne(
+            { phone_number: phone },
+            { $set: { is_verified: false } }
+          );
+          return res.status(200).json({ user:user,msg: "user updated!" });
+        }
+        res.status(200).json({ msg: "user not found!" });
+      }
+      catch(e){
+        res.status(400).send(e);
+      }
+    
+      })
+  
 
+
+      app.get("/users/update/email/:email",async(req,res)=>{
+        try{
+          const email = req.params.email;
+          const user = await User.findOne({
+            email: email
+          })
+          if(user) {
+            await User.updateOne(
+              { email: email },
+              { $set: { is_verified: false } }
+            );
+            return res.status(200).json({ user:user,msg: "user found!" });
+          }
+          res.status(200).json({ msg: "user not found!" });
+        }
+        catch(e){
+          res.status(400).send(e);
+        }
+      
+        })
   app.use(errorMiddleware);
 };
