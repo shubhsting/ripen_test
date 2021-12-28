@@ -64,7 +64,7 @@ exports.expressRoutes = (app) => {
             { phone_number: phone },
             { $set: { is_verified: false } }
           );
-          return res.status(200).json({ user:user,msg: "user updated!" });
+          return res.status(200).json({msg: "user updated!" });
         }
         res.status(200).json({ msg: "user not found!" });
       }
@@ -87,7 +87,7 @@ exports.expressRoutes = (app) => {
               { email: email },
               { $set: { is_verified: false } }
             );
-            return res.status(200).json({ user:user,msg: "user found!" });
+            return res.status(200).json({msg: "user updated!" });
           }
           res.status(200).json({ msg: "user not found!" });
         }
