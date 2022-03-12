@@ -2,6 +2,7 @@ const { verifyOTPApi, sendOTPApi, resendOTPApi } = require("../constants/msg91")
 const { User } = require("../models/user");
 const moment = require('moment');
 const { triggerRequest } = require("../utils/sendRequest");
+const { User_Event } = require("../models/user_events");
 
 async function verifyOTP(req,res) {
     try{
@@ -70,9 +71,28 @@ async function resendOTP(req,res) {
     }
 }
 
-
+async function updateUserEvent(req,res) {
+    try {
+        const {utm_source,event} = req.body;
+        if(!event) {
+            return res.status(400).send("no utm source or event found");
+        }
+        let user = await User_Event.findOne({ utm_source: utm_source,event:event });
+        if(!user){
+            user = await User_Event.create({utm_source:utm_source,event:event,count:0});
+        }
+        s_count = user.count;
+        await User_Event.updateOne(
+            { utm_source:utm_source,event:event },
+            { $set: { count: s_count+1 } }
+          );
+    } catch(e){
+        res.status(200).send({type:"error",message:e});
+    }
+}
 module.exports = {
     verifyOTP,
     sendOTP,
-    resendOTP
+    resendOTP,
+    updateUserEvent
 }

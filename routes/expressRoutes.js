@@ -2,6 +2,7 @@ const registerHandler = require("./registerHandler");
 const errorMiddleware = require("../middleware/errorMiddleware");
 const validateRouter = require("./validateRoutes");
 const { User } = require("../models/user");
+const { User_Event } = require("../models/user_events");
 
 exports.expressRoutes = (app) => {
   app.use("/api/auth/register", registerHandler);
@@ -16,6 +17,21 @@ exports.expressRoutes = (app) => {
       res.status(400).send(e);
     }
   });
+
+  app.get("/users/utm_source/:utm/event/:event",async(req,res)=>{
+    try{
+      const utm_source = req.params.utm;
+      const event = req.params.event;
+      const user_event = User_Event.findOne({utm_source:utm_source,event:event});
+      if(user_event) {
+        return res.status(200).send({count:user_event.count,msg:"Number of users of this event"})
+      }
+
+      return res.status(200).send({count:0,msg:"No users of this event found"})
+    } catch(e){
+      res.status(400).send(e);
+    }
+  })
 
   app.get("/users/email/:email",async(req,res)=>{
   try{
