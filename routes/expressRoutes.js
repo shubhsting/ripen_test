@@ -24,7 +24,7 @@ exports.expressRoutes = (app) => {
       const event = req.params.event;
       const user_event = User_Event.findOne({utm_source:utm_source,event:event});
       if(user_event) {
-        return res.status(200).send({count:user_event.count,msg:"Number of users of this event"})
+        return res.status(200).send({"count":user_event.count,msg:"Number of users of this event"})
       }
 
       return res.status(200).send({count:0,msg:"No users of this event found"})

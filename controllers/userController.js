@@ -86,6 +86,7 @@ async function updateUserEvent(req,res) {
             { utm_source:utm_source,event:event },
             { $set: { count: s_count+1 } }
           );
+        res.status(200).send({message:"done"})
     } catch(e){
         res.status(200).send({type:"error",message:e});
     }
